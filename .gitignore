@@ -1,0 +1,12 @@
+# Credenciais - NUNCA subir pro Git
+credentials.json
+.env
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Editor
+.vscode/
