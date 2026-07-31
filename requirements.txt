@@ -21,5 +21,6 @@ requests==2.34.2
 requests-oauthlib==2.0.0
 uritemplate==4.2.0
 urllib3==2.7.0
+python-dotenv==1.0.1
 
 # só para instalar as dependências: python -m pip install -r requirements.txt

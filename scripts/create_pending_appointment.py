@@ -1,11 +1,16 @@
 """
-Script: cria um evento PENDENTE no Google Agenda quando o paciente escolhe um horário.
+Script: cria um evento PENDENTE no Google Agenda quando o paciente escolhe um horário,
+e dispara um e-mail informativo pra clínica avisando da nova solicitação.
 
 Fluxo simulado neste teste (depois isso vai ser chamado pelo bot do WhatsApp):
 1. Lista os horários disponíveis (reaproveita a lógica de check_availability.py)
 2. Simula a escolha do paciente (input manual, por enquanto)
 3. Revalida que o horário ainda está livre (evita conflito de 2 pessoas escolhendo ao mesmo tempo)
 4. Cria o evento na agenda com status "PENDENTE" no título
+5. Envia e-mail avisando a clínica sobre a nova solicitação
+
+Rodar a partir da raiz do projeto com:
+    python -m scripts.create_pending_appointment
 """
 
 from datetime import timedelta
@@ -19,6 +24,7 @@ from app.check_availability import (
     CALENDAR_ID,
     DURACAO_CONSULTA_MIN,
 )
+from app.email_notifier import enviar_email_solicitacao_pendente
 
 
 def horario_ainda_disponivel(service, horario_inicio):
@@ -87,3 +93,11 @@ if __name__ == "__main__":
 
     print(f"\n✅ Evento pendente criado com sucesso!")
     print(f"Link do evento: {evento.get('htmlLink')}")
+
+    enviar_email_solicitacao_pendente(
+        nome_paciente=nome_teste,
+        telefone_paciente=telefone_teste,
+        horario_inicio=horario_escolhido,
+        tipo_consulta="Primeira consulta",
+        link_evento=evento.get("htmlLink"),
+    )
